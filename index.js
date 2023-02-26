@@ -4,7 +4,8 @@ const app = express();
 const { proxy, scriptUrl } = require("rtsp-relay")(app);
 
 const handler = proxy({
-  url: `rtsp://admin:admin123@kimanhttd.quickddns.com:5555`,
+  //url: `rtsp://admin:admin123@kimanhttd.quickddns.com:5555`,
+  url: `rtsp://admin:202020@phongdt.dvrlists.com:554//Streaming/Channels/1`,
   // if your RTSP stream need credentials, include them in the URL as above
   verbose: true,
 });
@@ -35,10 +36,9 @@ let currentTime =
 const camIpList = [
   {
     id: 0,
-    ip: "kimanhttd.quickddns.com",
-    port: 5555,
+    url: "phongdt.dvrlists.com:554//Streaming/Channels/1",
     username: "admin",
-    pwd: "admin123",
+    pwd: "202020",
   },
 ];
 let selectedCam = null;
@@ -52,8 +52,11 @@ app.ws("/api/stream/:cameraID", (ws, req) => {
     }
   });
   if (found) {
+    console.log(
+      `rtsp://${selectedCam.username}:${selectedCam.pwd}@${selectedCam.url}`
+    );
     return proxy({
-      url: `rtsp://${selectedCam.username}:${selectedCam.pwd}@${selectedCam.ip}:${selectedCam.port}`,
+      url: `rtsp://${selectedCam.username}:${selectedCam.pwd}@${selectedCam.url}`,
     })(ws);
   } else {
     return {
