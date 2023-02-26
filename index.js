@@ -84,7 +84,7 @@ app.get("/:cameraID", (req, res) => {
   const cameraID = req.params.cameraID;
   try {
     const data = fs.readFileSync(__dirname + "/playerpage.html", "utf8");
-    return res.send(data.replaceAll("RTSP_CHANNEL", cameraID));
+    return res.send(data.toString().replaceAll("RTSP_CHANNEL", cameraID));
   } catch (err) {
     console.error(err);
     return {
