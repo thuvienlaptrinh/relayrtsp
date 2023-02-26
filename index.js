@@ -43,7 +43,7 @@ const camIpList = [
   },
   {
     id: 1,
-    url: "rtsp://kimanhttd.quickddns.com:5555",
+    url: "kimanhttd.quickddns.com:5555",
     username: "admin",
     pwd: "admin123",
   },
