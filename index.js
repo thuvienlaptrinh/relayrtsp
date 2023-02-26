@@ -1,4 +1,5 @@
 const express = require("express");
+const fs = require("fs");
 const app = express();
 
 const { proxy, scriptUrl } = require("rtsp-relay")(app);
@@ -40,6 +41,12 @@ const camIpList = [
     username: "admin",
     pwd: "202020",
   },
+  {
+    id: 1,
+    url: "rtsp://kimanhttd.quickddns.com:5555",
+    username: "admin",
+    pwd: "admin123",
+  },
 ];
 let selectedCam = null;
 // the endpoint our RTSP uses
@@ -69,7 +76,21 @@ app.ws("/api/stream/:cameraID", (ws, req) => {
 app.ws("/rtsp", handler);
 
 // this is an example html page to view the stream
-app.get("/", (req, res) => res.sendFile(__dirname + "/homepage.html"));
+app.get("/:cameraID", (req, res) => {
+  const cameraID = req.params.cameraID;
+  try {
+    const data = fs.readFileSync(__dirname + "/homepage.html", "utf8");
+    return res.send(data.replace("RTSP_CHANNEL", cameraID));
+  } catch (err) {
+    console.error(err);
+    return {
+      ret: false,
+      msg: "Invalid camera id",
+    };
+  }
+
+  // return res.sendFile(__dirname + "/homepage.html");
+});
 
 app
   .listen(7000, function () {
