@@ -6,7 +6,7 @@ const { proxy, scriptUrl } = require("rtsp-relay")(app);
 const handler = proxy({
   url: `rtsp://admin:admin123@kimanhttd.quickddns.com:5555`,
   // if your RTSP stream need credentials, include them in the URL as above
-  verbose: false,
+  verbose: true,
 });
 let date_ob = new Date();
 
