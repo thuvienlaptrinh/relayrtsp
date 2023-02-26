@@ -64,7 +64,7 @@ app.ws("/api/stream/:cameraID", (ws, req) => {
   });
   if (found) {
     console.log(
-      `rtsp://${selectedCam.username}:${selectedCam.pwd}@${selectedCam.url}`
+      `Client đang xem kênh ${selectedCam.url}`
     );
     return proxy({
       url: `rtsp://${selectedCam.username}:${selectedCam.pwd}@${selectedCam.url}`,
@@ -83,8 +83,8 @@ app.ws("/rtsp", handler);
 app.get("/:cameraID", (req, res) => {
   const cameraID = req.params.cameraID;
   try {
-    const data = fs.readFileSync(__dirname + "/homepage.html", "utf8");
-    return res.send(data.replace("RTSP_CHANNEL", cameraID));
+    const data = fs.readFileSync(__dirname + "/playerpage.html", "utf8");
+    return res.send(data.replaceAll("RTSP_CHANNEL", cameraID));
   } catch (err) {
     console.error(err);
     return {
@@ -94,6 +94,11 @@ app.get("/:cameraID", (req, res) => {
   }
 
   // return res.sendFile(__dirname + "/homepage.html");
+});
+
+//Homepage handler
+app.get("/", (req, res) => { 
+  return res.sendFile(__dirname + "/homepage.html");
 });
 
 app
