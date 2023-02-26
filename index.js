@@ -68,7 +68,8 @@ app.ws("/api/stream/:cameraID", (ws, req) => {
       {
         url: `rtsp://${selectedCam.username}:${selectedCam.pwd}@${selectedCam.url}`,
       },
-      { additionalFlags: ["-q", "1"] }
+      { additionalFlags: ["-q", "1"] },
+      { transport: "tcp" }
     )(ws);
   } else {
     return {
