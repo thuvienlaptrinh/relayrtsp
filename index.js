@@ -85,8 +85,8 @@ app.get("/:cameraID", (req, res) => {
     // use the toString() method to convert
     // Buffer into String
     const fileContent = buffer.toString();
-    
-    return res.send(fileContent.replaceAll("RTSP_CHANNEL", cameraID));
+
+    return res.send(fileContent.replace("RTSP_CHANNEL", cameraID).replace("RTSP_CHANNEL", cameraID));
   } catch (err) {
     console.error(err);
     return {
