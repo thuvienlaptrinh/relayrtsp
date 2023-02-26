@@ -5,10 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trang xem rtsp</title>
-    
+    <style>
+      .videowrapper {
+        width: 100%;
+        align-items: center;
+        display: flex;
+      }
+      .videoplayer {
+        max-width: 640px;
+        margin: auto;
+      }
+    </style>
   </head>
   <body>
-    <canvas id="canvasrtsp"></canvas>
+    <div class="videowrapper">
+      <canvas id="canvasrtsp" class="videoplayer"></canvas>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/rtsp-relay@1.6.1/browser/index.js"></script>
     <script>
       loadPlayer({
