@@ -34,6 +34,10 @@ let seconds = date_ob.getSeconds();
 let currentTime =
   year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
 
+const CameraData = JSON.parse(
+  fs.readFileSync(__dirname + "/cameralist.json", "utf8")
+);
+// console.log(CameraData);
 const camIpList = [
   {
     id: 0,
@@ -52,7 +56,7 @@ let selectedCam = null;
 // the endpoint our RTSP uses
 app.ws("/api/stream/:cameraID", (ws, req) => {
   let found = false;
-  camIpList.forEach((item) => {
+  CameraData.forEach((item) => {
     if (item.id == req.params.cameraID) {
       found = true;
       selectedCam = item;
