@@ -4,12 +4,6 @@ const app = express();
 
 const { proxy, scriptUrl } = require("rtsp-relay")(app);
 
-const handler = proxy({
-  //url: `rtsp://admin:admin123@kimanhttd.quickddns.com:5555`,
-  url: `rtsp://admin:202020@phongdt.dvrlists.com:554//Streaming/Channels/1`,
-  // if your RTSP stream need credentials, include them in the URL as above
-  verbose: true,
-});
 let date_ob = new Date();
 
 // current date
@@ -66,8 +60,6 @@ app.ws("/api/stream/:cameraID", (ws, req) => {
     };
   }
 });
-
-app.ws("/rtsp", handler);
 
 // this is an example html page to view the stream
 app.get("/:cameraID", (req, res) => {
