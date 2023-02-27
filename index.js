@@ -38,20 +38,7 @@ const CameraData = JSON.parse(
   fs.readFileSync(__dirname + "/cameralist.json", "utf8")
 );
 // console.log(CameraData);
-const camIpList = [
-  {
-    id: 0,
-    url: "phongdt.dvrlists.com:554//Streaming/Channels/1",
-    username: "admin",
-    pwd: "202020",
-  },
-  {
-    id: 1,
-    url: "kimanhttd.quickddns.com:5555",
-    username: "admin",
-    pwd: "admin123",
-  },
-];
+
 let selectedCam = null;
 // the endpoint our RTSP uses
 app.ws("/api/stream/:cameraID", (ws, req) => {
@@ -67,6 +54,7 @@ app.ws("/api/stream/:cameraID", (ws, req) => {
     return proxy(
       {
         url: `rtsp://${selectedCam.username}:${selectedCam.pwd}@${selectedCam.url}`,
+        verbose: true,
       },
       { additionalFlags: ["-q", "1"] },
       { transport: "tcp" }
