@@ -51,7 +51,7 @@ app.ws("/api/stream/:cameraID", (ws, req) => {
         verbose: true,
       },
       { additionalFlags: ["-q", "1"] },
-      { transport: "tcp" }
+      // { transport: "tcp" }
     )(ws);
   } else {
     return {
