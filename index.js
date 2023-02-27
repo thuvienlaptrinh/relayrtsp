@@ -69,11 +69,25 @@ app.get("/:cameraID", (req, res) => {
     // use the toString() method to convert
     // Buffer into String
     const fileContent = buffer.toString();
-
+    let CAMERA_TITLE = "bên trong trạm bơm";
+    switch (cameraID) {
+      case "UMT-CA-01":
+        CAMERA_TITLE = "bên trong trạm bơm";
+        break;
+      case "UMT-CA-02":
+        CAMERA_TITLE = "theo dõi trạm quan trắc";
+        break;
+      case "UMT-CA-03":
+        CAMERA_TITLE = "trạm xử lý nước";
+        break;
+      default:
+        break;
+    }
     return res.send(
       fileContent
         .replace("RTSP_CHANNEL", cameraID)
         .replace("RTSP_CHANNEL", cameraID)
+        .replace("CAMERA_TITLE", CAMERA_TITLE)
     );
   } catch (err) {
     console.error(err);
