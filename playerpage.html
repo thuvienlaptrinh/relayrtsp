@@ -15,9 +15,13 @@
         max-width: 1280px;
         margin: auto;
       }
-      .videotitle{
+      .videotitle {
         max-width: 1280px;
         margin: auto;
+      }
+      .liststyle {
+        line-height: 2rem;
+        font-size: 1.5rem;
       }
     </style>
   </head>
@@ -25,10 +29,13 @@
     <div class="videotitle">
       <h1>Camera CAMERA_TITLE</h1>
     </div>
+    <div id="loadingtext">
+      <h2>Đang kết nối đường truyền tới camera, xin vui lòng chờ ...</h2>
+    </div>
     <div class="videowrapper">
       <canvas id="canvasrtsp" class="videoplayer"></canvas>
     </div>
-    <div>
+    <div class="liststyle">
       <a href="/">Về trang danh sách</a>
     </div>
 
@@ -38,6 +45,15 @@
         url: "ws://" + location.host + "/api/stream/RTSP_CHANNEL",
         canvas: document.getElementById("canvasrtsp"),
       });
+      setInterval(function () {
+        const elmnt = document.getElementById("canvasrtsp");
+        const elmntloading = document.getElementById("loadingtext");
+        if (elmnt.offsetHeight > 10) {
+          elmntloading.style.display = "none";
+        } else {
+          elmntloading.style.display = "flex";
+        }
+      }, 100);
     </script>
   </body>
 </html>
