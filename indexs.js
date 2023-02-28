@@ -9,7 +9,7 @@ const cert = fs.readFileSync("./cert.pem", "utf8");
 const ca = fs.readFileSync("./cert.pem", "utf8"); // required for iOS 15+
 
 const app = express();
-const server = https.createServer({ key, cert }, app);
+const server = https.createServer({ key, cert, passphrase: 'chuyendoiso' }, app);
 const { proxy, scriptUrl } = rtspRelay(app, server);
 
 let date_ob = new Date();
