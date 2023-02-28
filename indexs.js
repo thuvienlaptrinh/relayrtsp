@@ -4,12 +4,12 @@ const fs = require("fs");
 
 const https = require("https");
 
-const key = fs.readFileSync("./privatekey.pem", "utf8");
-const cert = fs.readFileSync("./fullchain.pem", "utf8");
-const ca = fs.readFileSync("./chain.pem", "utf8"); // required for iOS 15+
+const key = fs.readFileSync("./key.pem", "utf8");
+const cert = fs.readFileSync("./cert.pem", "utf8");
+const ca = fs.readFileSync("./cert.pem", "utf8"); // required for iOS 15+
 
 const app = express();
-const server = https.createServer({ key, cert, ca }, app);
+const server = https.createServer({ key, cert }, app);
 const { proxy, scriptUrl } = rtspRelay(app, server);
 
 let date_ob = new Date();
