@@ -1,15 +1,27 @@
 {
-  "name": "nodeRTP",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "serve": "node index"
+  "name": "relayrtsp",
+  "license": "MIT",
+  "version": "0.0.1",
+  "author": "Dang Tuan Phong",  
+  "engines": {
+    "node": ">=6"
   },
-  "author": "",
-  "license": "ISC",
+  "description": "ffmpeg wrapper for rtsp streaming via node.js",  
+  "keywords": [
+    "rtsp",
+    "ffmpeg",
+    "mjpeg",
+    "motionjpeg"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thuvienlaptrinh/relayrtsp.git"
+  },
+  "devDependencies": {
+    "express": ">=4.5",
+    "socket.io": ">=2.1"
+  },
   "dependencies": {
-    "express": "^4.18.2",
-    "rtsp-relay": "^1.6.1"
+    "rtsp-ffmpeg": "^0.0.16"
   }
 }

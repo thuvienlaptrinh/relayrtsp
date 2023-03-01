@@ -1,14 +1,20 @@
 const express = require("express");
 const app = express();
-
-const server = require("http").Server(app);
-const io = require("socket.io")(server);
-const rtsp = require("rtsp-ffmpeg");
+const https = require("https");
 const fs = require("fs");
 
+const key = fs.readFileSync("./key.pem", "utf8");
+const cert = fs.readFileSync("./cert.pem", "utf8");
+
+const server = https.createServer({ key, cert }, app);
+
+const io = require("socket.io")(server);
+const rtsp = require("rtsp-ffmpeg");
+
+
 app.use(express.static("public"));
-server.listen(443, function () {
-  console.log("Listening on localhost:443");
+server.listen(7000, function () {
+  console.log("Listening on localhost:7000");
 });
 
 const CameraData = JSON.parse(
