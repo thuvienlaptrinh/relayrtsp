@@ -7,8 +7,8 @@ const rtsp = require("rtsp-ffmpeg");
 const fs = require("fs");
 
 app.use(express.static("public"));
-server.listen(443, function () {
-  console.log("Listening on localhost:443");
+server.listen(7000, function () {
+  console.log("Listening on localhost:7000");
 });
 
 const CameraData = JSON.parse(
