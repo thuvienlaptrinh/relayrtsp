@@ -18,7 +18,7 @@ const CameraData = JSON.parse(
 var cams = CameraData.map(function (T, i) {
   var stream = new rtsp.FFMpeg({
     input: `rtsp://${T.username}:${T.pwd}@${T.url}`,
-    resolution: "1920x1080",
+    resolution: "640x360",
     quality: 4,
     camid: T.id,
   });
