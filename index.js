@@ -1,12 +1,25 @@
 const express = require("express");
 const app = express();
+const { Server } = require("socket.io");
 
-const server = require("http").Server(app);
-const io = require("socket.io")(server);
 const rtsp = require("rtsp-ffmpeg");
 const fs = require("fs");
-
+const cors = require("cors");
+const corsOptions = {
+  origin: "*",
+  methods: "GET,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+app.use(cors(corsOptions));
 app.use(express.static("public"));
+const server = require("http").Server(app);
+// const io = require("socket.io")(server);
+const io = new Server({
+  cors: { origin: "*", methods: ["GET", "POST"] },
+}).listen(server);
+
+
 server.listen(7000, function () {
   console.log("Listening on localhost:7000");
 });
