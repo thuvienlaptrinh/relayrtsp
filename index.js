@@ -17,11 +17,11 @@ const CameraData = JSON.parse(
 
 var cams = CameraData.map(function (T, i) {
   var stream = new rtsp.FFMpeg({
-    input: `rtsp://${T.username}:${T.pwd}@${T.url}`,
-    resolution: "1280x720",
+    input: `rtsp://${T.username}:${T.pwd}@${T.url}/cam/realmonitor?channel=1&subtype=1`,
+    resolution: "704x396",
     quality: 4,
     camid: T.id,
-    rate: 2
+    rate: 5
   });
   stream.camid = T.id;
   stream.on("start", function () {
