@@ -18,7 +18,13 @@ app.use(express.static("public"));
 const key = fs.readFileSync("./key.pem", "utf8");
 const cert = fs.readFileSync("./cert.pem", "utf8");
 const server = https.createServer(
-  { key, cert, requestCert: false, rejectUnauthorized: false },
+  {
+    key,
+    cert,
+    passphrase: "chuyendoiso",
+    requestCert: false,
+    rejectUnauthorized: false,
+  },
   app
 );
 
