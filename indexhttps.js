@@ -25,7 +25,7 @@ var cams = CameraData.map(function (T, i) {
   var stream = new rtsp.FFMpeg({
     input: `rtsp://${T.username}:${T.pwd}@${T.url}`,
     resolution: "1280x720",
-    quality: 4,
+    quality: 85,
     camid: T.id,
     rate: 5
   });
