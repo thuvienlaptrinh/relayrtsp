@@ -65,14 +65,22 @@ var cams = CameraData.map(function (T, i) {
 cams.forEach(function (camStream, i) {
   var ns = io.of("/stream/" + camStream.camid);
   ns.on("connection", function (wsocket) {
-    console.log("connected to camera " + camStream.camid);
+    console.log(
+      new Date(Date.now()).toString() +
+        ": connected to camera " +
+        camStream.camid
+    );
     var pipeStream = function (data) {
       wsocket.emit("data", data);
     };
     camStream.on("data", pipeStream);
 
     wsocket.on("disconnect", function () {
-      console.log("disconnected from camera" + camStream.camid);
+      console.log(
+        new Date(Date.now()).toString() +
+          ": disconnected from camera" +
+          camStream.camid
+      );
       camStream.removeListener("data", pipeStream);
     });
   });

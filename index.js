@@ -19,7 +19,6 @@ const io = new Server({
   cors: { origin: "*", methods: ["GET", "POST"] },
 }).listen(server);
 
-
 server.listen(7000, function () {
   console.log("Listening on localhost:7000");
 });
@@ -34,7 +33,7 @@ var cams = CameraData.map(function (T, i) {
     resolution: "704x396",
     quality: 4,
     camid: T.id,
-    rate: 5
+    rate: 5,
   });
   stream.camid = T.id;
   stream.on("start", function () {
@@ -53,14 +52,22 @@ var cams = CameraData.map(function (T, i) {
 cams.forEach(function (camStream, i) {
   var ns = io.of("/stream/" + camStream.camid);
   ns.on("connection", function (wsocket) {
-    console.log("connected to camera " + camStream.camid);
+    console.log(
+      new Date(Date.now()).toString() +
+        ": connected to camera " +
+        camStream.camid
+    );
     var pipeStream = function (data) {
       wsocket.emit("data", data);
     };
     camStream.on("data", pipeStream);
 
     wsocket.on("disconnect", function () {
-      console.log("disconnected from camera" + camStream.camid);
+      console.log(
+        new Date(Date.now()).toString() +
+          ": disconnected from camera" +
+          camStream.camid
+      );
       camStream.removeListener("data", pipeStream);
     });
   });
