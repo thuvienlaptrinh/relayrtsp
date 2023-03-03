@@ -13,8 +13,8 @@ const rtsp = require("rtsp-ffmpeg");
 
 
 app.use(express.static("public"));
-server.listen(7043, function () {
-  console.log("Listening https on port:7043");
+server.listen(7001, function () {
+  console.log("Listening https on port:7001");
 });
 
 const CameraData = JSON.parse(
