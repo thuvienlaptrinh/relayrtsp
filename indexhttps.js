@@ -17,17 +17,18 @@ app.use(express.static("public"));
 
 const key = fs.readFileSync("./key.pem", "utf8");
 const cert = fs.readFileSync("./cert.pem", "utf8");
-const server = https.createServer({ key, cert }, app);
+const server = https.createServer(
+  { key, cert, requestCert: false, rejectUnauthorized: false },
+  app
+);
 
 const io = new Server({
   cors: { origin: "*", methods: ["GET", "POST"] },
 }).listen(server);
 
-
 server.listen(443, function () {
   console.log("Listening on localhost:443");
 });
-
 
 const CameraData = JSON.parse(
   fs.readFileSync(__dirname + "/cameralist.json", "utf8")
@@ -39,7 +40,7 @@ var cams = CameraData.map(function (T, i) {
     resolution: "704x396",
     quality: 4,
     camid: T.id,
-    rate: 4
+    rate: 4,
   });
   stream.camid = T.id;
   stream.on("start", function () {
@@ -78,4 +79,3 @@ io.on("connection", function (socket) {
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index-canvas.html");
 });
-
