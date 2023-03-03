@@ -24,8 +24,8 @@ const io = new Server({
 }).listen(server);
 
 
-server.listen(7443, function () {
-  console.log("Listening on localhost:7443");
+server.listen(443, function () {
+  console.log("Listening on localhost:443");
 });
 
 
