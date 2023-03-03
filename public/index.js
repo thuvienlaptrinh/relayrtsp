@@ -1,13 +1,16 @@
 var divSocket;
-var socket = io();
+// var socket = io();
 var canvas = document.getElementById("videoPlayer");
 var select = document.getElementsByTagName("select")[0];
 select.onchange = function () {
+  if (this.value == '') {
+    return false
+  }
   if (divSocket) {
     divSocket.disconnect();
   }
   console.log("Đang mở kênh camera " + this.value);
-  divSocket = io(location.origin + this.value);
+  divSocket = io(`${location.origin}/stream/${this.value}`);
   divSocket.on("data", function (data) {
     var bytes = new Uint8Array(data);
 
