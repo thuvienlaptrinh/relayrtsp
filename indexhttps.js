@@ -44,7 +44,7 @@ var cams = CameraData.map(function (T, i) {
 });
 
 cams.forEach(function (camStream, i) {
-  var ns = io.of("/cam" + i);
+  var ns = io.of("/stream/" + camStream.camid);
   ns.on("connection", function (wsocket) {
     console.log("connected to camera " + camStream.camid);
     var pipeStream = function (data) {
@@ -66,3 +66,4 @@ io.on("connection", function (socket) {
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index-canvas.html");
 });
+
