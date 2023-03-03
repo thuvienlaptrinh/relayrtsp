@@ -2,11 +2,11 @@
   "name": "relayrtsp",
   "license": "MIT",
   "version": "0.0.1",
-  "author": "Dang Tuan Phong",  
+  "author": "Dang Tuan Phong",
   "engines": {
     "node": ">=6"
   },
-  "description": "ffmpeg wrapper for rtsp streaming via node.js",  
+  "description": "ffmpeg wrapper for rtsp streaming via node.js",
   "keywords": [
     "rtsp",
     "ffmpeg",
@@ -22,6 +22,7 @@
     "socket.io": ">=2.1"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "rtsp-ffmpeg": "^0.0.16"
   }
 }
