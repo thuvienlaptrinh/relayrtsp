@@ -26,8 +26,8 @@ app.use(express.static("public"));
 const HTTP_SERVER = http.createServer(app).listen(7000, function () {
   console.log("Listening on localhost:7000");
 });
-const HTTPS_SERVER = https.createServer(options, app).listen(7443, function () {
-  console.log("Listening on localhost:7443");
+const HTTPS_SERVER = https.createServer(options, app).listen(443, function () {
+  console.log("Listening on localhost:443");
 });
 
 // const io = require("socket.io")(server);
