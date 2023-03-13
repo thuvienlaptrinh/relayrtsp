@@ -1,3 +1,6 @@
+var https = require("https");
+var http = require("http");
+
 const express = require("express");
 const app = express();
 const { Server } = require("socket.io");
@@ -11,17 +14,30 @@ const corsOptions = {
   preflightContinue: false,
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
+const options = {
+  key: fs.readFileSync("./key.pem", "utf8"),
+  cert: fs.readFileSync("./cert.pem", "utf8"),
+  requestCert: false,
+  rejectUnauthorized: false,
+};
 app.use(cors(corsOptions));
 app.use(express.static("public"));
-const server = require("http").Server(app);
+
+const HTTP_SERVER = http.createServer(app).listen(7000, function () {
+  console.log("Listening on localhost:7000");
+});
+const HTTPS_SERVER = https.createServer(options, app).listen(7443, function () {
+  console.log("Listening on localhost:7443");
+});
+
 // const io = require("socket.io")(server);
 const io = new Server({
   cors: { origin: "*", methods: ["GET", "POST"] },
-}).listen(server);
+}).listen(HTTP_SERVER);
 
-server.listen(7000, function () {
-  console.log("Listening on localhost:7000");
-});
+const iohttps = new Server({
+  cors: { origin: "*", methods: ["GET", "POST"] },
+}).listen(HTTPS_SERVER);
 
 const CameraData = JSON.parse(
   fs.readFileSync(__dirname + "/cameralist.json", "utf8")
@@ -55,7 +71,7 @@ cams.forEach(function (camStream, i) {
     console.log(
       new Date(Date.now()).toString() +
         ": connected to camera " +
-        camStream.camid
+        camStream.camid + " through http port"
     );
     var pipeStream = function (data) {
       wsocket.emit("data", data);
@@ -66,16 +82,43 @@ cams.forEach(function (camStream, i) {
       console.log(
         new Date(Date.now()).toString() +
           ": disconnected from camera" +
-          camStream.camid
+          camStream.camid + " through http port"
+      );
+      camStream.removeListener("data", pipeStream);
+    });
+  });
+
+  var ns_https = iohttps.of("/stream/" + camStream.camid);
+  ns_https.on("connection", function (wsocket) {
+    console.log(
+      new Date(Date.now()).toString() +
+        ": connected to camera " +
+        camStream.camid + " through https port"
+    );
+    var pipeStream = function (data) {
+      wsocket.emit("data", data);
+    };
+    camStream.on("data", pipeStream);
+
+    wsocket.on("disconnect", function () {
+      console.log(
+        new Date(Date.now()).toString() +
+          ": disconnected from camera" +
+          camStream.camid + " through https port"
       );
       camStream.removeListener("data", pipeStream);
     });
   });
 });
 
-io.on("connection", function (socket) {
+const socketHandler = (socket) => {
   socket.emit("start", cams.length);
-});
+};
+
+io.on("connection", socketHandler);
+iohttps.on("connection", socketHandler);
+
+
 
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index-canvas.html");
