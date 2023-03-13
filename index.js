@@ -65,35 +65,51 @@ var cams = CameraData.map(function (T, i) {
   return stream;
 });
 
+const CAM_HANDLER = {};
+
 cams.forEach(function (camStream, i) {
-  var ns = io.of("/stream/" + camStream.camid);
-  ns.on("connection", function (wsocket) {
+  CAM_HANDLER[i] = io.of("/stream/" + camStream.camid);
+  CAM_HANDLER[i].on("connection", function (wsocket) {
+    CameraData[i].client++;
     console.log(
       new Date(Date.now()).toString() +
-        ": connected to camera " +
-        camStream.camid + " through http port"
+        ": Has " +
+        CameraData[i].client +
+        " client(s) connected to camera " +
+        camStream.camid +
+        " through http port"
     );
-    var pipeStream = function (data) {
+
+    const pipeStream = function (data) {
       wsocket.emit("data", data);
     };
     camStream.on("data", pipeStream);
 
     wsocket.on("disconnect", function () {
+      CameraData[i].client--;
       console.log(
         new Date(Date.now()).toString() +
-          ": disconnected from camera" +
-          camStream.camid + " through http port"
+          ": Has client disconnected from camera" +
+          camStream.camid +
+          " through http port. Total: " +
+          CameraData[i].client +
+          " client(s)"
       );
       camStream.removeListener("data", pipeStream);
     });
   });
-
-  var ns_https = iohttps.of("/stream/" + camStream.camid);
-  ns_https.on("connection", function (wsocket) {
+ 
+  const camID = i + 'HTTPS';
+  CAM_HANDLER[camID] = iohttps.of("/stream/" + camStream.camid);
+  CAM_HANDLER[camID].on("connection", function (wsocket) {
+    CameraData[i].clients++;
     console.log(
       new Date(Date.now()).toString() +
-        ": connected to camera " +
-        camStream.camid + " through https port"
+        ": Has " +
+        CameraData[i].clients +
+        " client(s) connected to camera " +
+        camStream.camid +
+        " through https port"
     );
     var pipeStream = function (data) {
       wsocket.emit("data", data);
@@ -101,10 +117,14 @@ cams.forEach(function (camStream, i) {
     camStream.on("data", pipeStream);
 
     wsocket.on("disconnect", function () {
+      CameraData[i].clients--;
       console.log(
         new Date(Date.now()).toString() +
-          ": disconnected from camera" +
-          camStream.camid + " through https port"
+          ": Has client disconnected from camera" +
+          camStream.camid +
+          " through https port. Total: " +
+          CameraData[i].clients +
+          " client(s)"
       );
       camStream.removeListener("data", pipeStream);
     });
@@ -117,8 +137,6 @@ const socketHandler = (socket) => {
 
 io.on("connection", socketHandler);
 iohttps.on("connection", socketHandler);
-
-
 
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index-canvas.html");
