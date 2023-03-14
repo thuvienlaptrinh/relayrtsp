@@ -1,5 +1,5 @@
-const HTTP_PORT = 7000;
-const HTTPS_PORT = 7443;
+const HTTP_PORT = 80;
+const HTTPS_PORT = 443;
 var https = require("https");
 var http = require("http");
 
