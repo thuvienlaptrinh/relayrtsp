@@ -7,7 +7,7 @@ const express = require("express");
 const app = express();
 const { Server } = require("socket.io");
 
-const rtsp = require("rtsp-ffmpeg");
+const rtsp = require("./ffmpeg-lib");
 const fs = require("fs");
 const cors = require("cors");
 const corsOptions = {
@@ -87,6 +87,9 @@ cams.forEach(function (camStream, i) {
       wsocket.emit("data", data);
     };
     camStream.on("data", pipeStream);
+    camStream.on("data error", function(){
+      console.log(new Date(Date.now()).toString() + ": Đã có lỗi xảy ra khi kết nối với luồng stream!");
+    })
 
     wsocket.on("disconnect", function () {
       CameraData[i].client--;
@@ -119,6 +122,9 @@ cams.forEach(function (camStream, i) {
       wsocket.emit("data", data);
     };
     camStream.on("data", pipeStream);
+    camStream.on("data error", function(){
+      console.log(new Date(Date.now()).toString() + ": Đã có lỗi xảy ra khi kết nối với luồng stream!");
+    })
 
     wsocket.on("disconnect", function () {
       CameraData[i].clients--;
