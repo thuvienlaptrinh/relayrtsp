@@ -1,9 +1,11 @@
 const express = require("express");
 var http = require("http");
 const app = express();
-app.use(express.static("public"), {
-  dotfiles: "allow",
-});
+app.use(
+  express.static("public", {
+    dotfiles: "allow",
+  })
+);
 const HTTP_PORT = 80;
 
 const HTTP_SERVER = http.createServer(app).listen(HTTP_PORT, function () {
