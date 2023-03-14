@@ -1,3 +1,5 @@
+const HTTP_PORT = 7000;
+const HTTPS_PORT = 7443;
 var https = require("https");
 var http = require("http");
 
@@ -23,11 +25,11 @@ const options = {
 app.use(cors(corsOptions));
 app.use(express.static("public"));
 
-const HTTP_SERVER = http.createServer(app).listen(7000, function () {
-  console.log("Listening on localhost:7000");
+const HTTP_SERVER = http.createServer(app).listen(HTTP_PORT, function () {
+  console.log(`Listening on localhost:${HTTP_PORT}`);
 });
-const HTTPS_SERVER = https.createServer(options, app).listen(443, function () {
-  console.log("Listening on localhost:443");
+const HTTPS_SERVER = https.createServer(options, app).listen(HTTPS_PORT, function () {
+  console.log(`Listening on localhost:${HTTPS_PORT}`);
 });
 
 // const io = require("socket.io")(server);
@@ -71,6 +73,7 @@ cams.forEach(function (camStream, i) {
   CAM_HANDLER[i] = io.of("/stream/" + camStream.camid);
   CAM_HANDLER[i].on("connection", function (wsocket) {
     CameraData[i].client++;
+
     console.log(
       new Date(Date.now()).toString() +
         ": Has " +
@@ -87,6 +90,7 @@ cams.forEach(function (camStream, i) {
 
     wsocket.on("disconnect", function () {
       CameraData[i].client--;
+
       console.log(
         new Date(Date.now()).toString() +
           ": Has client disconnected from camera" +
@@ -98,8 +102,8 @@ cams.forEach(function (camStream, i) {
       camStream.removeListener("data", pipeStream);
     });
   });
- 
-  const camID = i + 'HTTPS';
+
+  const camID = i + "HTTPS";
   CAM_HANDLER[camID] = iohttps.of("/stream/" + camStream.camid);
   CAM_HANDLER[camID].on("connection", function (wsocket) {
     CameraData[i].clients++;
