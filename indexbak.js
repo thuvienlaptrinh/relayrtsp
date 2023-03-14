@@ -23,9 +23,11 @@ const options = {
   rejectUnauthorized: false,
 };
 app.use(cors(corsOptions));
-app.use(express.static("public"), {
-  dotfiles: "allow",
-});
+app.use(
+  express.static("public", {
+    dotfiles: "allow",
+  })
+);
 
 const HTTP_SERVER = http.createServer(app).listen(HTTP_PORT, function () {
   console.log(`Listening on localhost:${HTTP_PORT}`);
