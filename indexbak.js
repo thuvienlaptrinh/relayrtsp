@@ -39,13 +39,13 @@ const HTTPS_SERVER = https
   });
 
 // const io = require("socket.io")(server);
-const io = new Server({
+const io = new Server(HTTP_SERVER, {
   cors: { origin: "*", methods: ["GET", "POST"] },
-}).listen(HTTP_SERVER);
+});
 
-const iohttps = new Server({
+const iohttps = new Server(HTTPS_SERVER, {
   cors: { origin: "*", methods: ["GET", "POST"] },
-}).listen(HTTPS_SERVER);
+});
 
 const CameraData = JSON.parse(
   fs.readFileSync(__dirname + "/cameralist.json", "utf8")
