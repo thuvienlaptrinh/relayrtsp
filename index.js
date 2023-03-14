@@ -23,14 +23,18 @@ const options = {
   rejectUnauthorized: false,
 };
 app.use(cors(corsOptions));
-app.use(express.static("public"));
+app.use(express.static("public"), {
+  dotfiles: "allow",
+});
 
 const HTTP_SERVER = http.createServer(app).listen(HTTP_PORT, function () {
   console.log(`Listening on localhost:${HTTP_PORT}`);
 });
-const HTTPS_SERVER = https.createServer(options, app).listen(HTTPS_PORT, function () {
-  console.log(`Listening on localhost:${HTTPS_PORT}`);
-});
+const HTTPS_SERVER = https
+  .createServer(options, app)
+  .listen(HTTPS_PORT, function () {
+    console.log(`Listening on localhost:${HTTPS_PORT}`);
+  });
 
 // const io = require("socket.io")(server);
 const io = new Server({
@@ -87,9 +91,12 @@ cams.forEach(function (camStream, i) {
       wsocket.emit("data", data);
     };
     camStream.on("data", pipeStream);
-    camStream.on("data error", function(){
-      console.log(new Date(Date.now()).toString() + ": Đã có lỗi xảy ra khi kết nối với luồng stream!");
-    })
+    camStream.on("data error", function () {
+      console.log(
+        new Date(Date.now()).toString() +
+          ": Đã có lỗi xảy ra khi kết nối với luồng stream!"
+      );
+    });
 
     wsocket.on("disconnect", function () {
       CameraData[i].client--;
@@ -122,9 +129,12 @@ cams.forEach(function (camStream, i) {
       wsocket.emit("data", data);
     };
     camStream.on("data", pipeStream);
-    camStream.on("data error", function(){
-      console.log(new Date(Date.now()).toString() + ": Đã có lỗi xảy ra khi kết nối với luồng stream!");
-    })
+    camStream.on("data error", function () {
+      console.log(
+        new Date(Date.now()).toString() +
+          ": Đã có lỗi xảy ra khi kết nối với luồng stream!"
+      );
+    });
 
     wsocket.on("disconnect", function () {
       CameraData[i].clients--;
