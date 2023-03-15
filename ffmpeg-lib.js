@@ -8,7 +8,7 @@ const spawn = require('child_process').spawn
 	, Buffer = require('buffer').Buffer
 	;
 
-	EventEmitter.defaultMaxListeners = 50
+	EventEmitter.defaultMaxListeners = 200
 /**
  * Stream constructor
  * @param {object} options
