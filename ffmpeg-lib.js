@@ -69,6 +69,9 @@ function observer(changes) {
 
 FFMpeg.prototype._args = function() {
 	return this.arguments.concat([
+		'-vsync', '0',
+		'-hwaccel', 'cuda',
+		'-hwaccel_output_format', 'cuda',
 		'-loglevel', 'quiet',
 		'-i', this.input,
 		'-r', this.rate.toString()
