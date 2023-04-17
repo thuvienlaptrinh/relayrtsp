@@ -1,4 +1,5 @@
 const { exec } = require("child_process");
+
 const command = "ffmpeg -i 'rtsp://admin:admin123456@thuyloiumt.kbvision.tv:5556/cam/realmonitor?channel=1&subtype=1' -r 25 -s '704x396' -crf 25 -preset faster -maxrate 500k -bufsize 1500k -c:v libx264 -hls_time 4 -hls_list_size 20 -start_number 1 -hls_flags delete_segments -hls_segment_filename public/cam01/file%03d.ts -y public/cam01/playlist.m3u8"
 
 const fs = require("fs");
