@@ -57,7 +57,7 @@ var cams = CameraData.map(function (T, i) {
     resolution: "704x396",
     quality: 1,
     camid: T.id,
-    rate: 25,
+    rate: 5,
   });
   stream.camid = T.id;
   stream.on("start", function () {
